@@ -248,31 +248,42 @@ Assuming that Keyme already has a thriving services business that deals with con
     ∘ Add the required elements you think would be necessary to distinguish the booking of a "key cleaning" service from other bookings Key Me already provides.
 
 #### ProfessionalService class
-    ∘ UNIQUE_ID: INT
-    ∘ type: STRING
-    ∘ has_many: Contractors
+    ∘ unique_id: INT
+    ∘ service_type: STRING
+    ∘ has_many: :contractors
 
 #### Contractor class
-    ∘ UNIQUE_ID: INT
-    ∘ belongs_to: ProfessionalService
-    ∘ has_many: ProfessionalServiceBookings
-    ∘ has_many: ContractorReviews
+    ∘ unique_id: INT
+    ∘ has_one: service_type, through: :professional_service
+    ∘ has_one: :rating, through: :reviews
+    ∘ has_many: :professional_service_bookings
+    ∘ has_many: :written_reviews, through: :reviews
     ∘ name: STRING
 
+#### Customer class
+    ∘ unique_id: INT
+    ∘ email: STRING
+    ∘ name: STRING
+    ∘ address: STRING
+    ∘ has_many: :professional_service_bookings
+
 #### ProfessionalServiceBooking class
-    ∘ UNIQUE_ID: INT
-    ∘ belongs_to: Customer
-    ∘ has_one: Contractor
-    ∘ has_one: ServiceStatus 
+    ∘ unique_id: INT
+    ∘ has_one: :service_type, through: :professional_service
+    ∘ has_one: :customer
+    ∘ has_one: :contractor
+    ∘ has_one: :service_status
 
 #### ServiceStatus class
-    ∘ belongs_to: ProfessionalServiceBooking class
+    ∘ unique_id: INT
+    ∘ belongs_to: :professional_service_booking
     ∘ status: STRING
 
-#### ContractorReview class
-    ∘ belongs_to: Contractor
-    ∘ review: STRING
-    ∘ rating: IN
+#### Review class
+    ∘ unique_id: INT
+    ∘ belongs_to: :contractor
+    ∘ written_review: STRING
+    ∘ rating: INT
 
 
 #### 2. Flowchart the end-to-end system that would be required to:
